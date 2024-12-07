@@ -57,7 +57,7 @@ public:
 
    void setDxDy(double dx, double dy);
 
-   Angle operator+(double degrees) const;
+   Angle& operator+(double degrees);
 
 private:
    double normalize(double radians) const;

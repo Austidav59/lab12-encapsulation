@@ -10,6 +10,7 @@
 #pragma once
 
 #include <list>
+#include "projectile.h"
 #include "angle.h"
 #include "position.h"
 #include "velocity.h"
@@ -32,7 +33,7 @@ public:
    friend TestHowitzer;
 
    Howitzer()
-       : mass(46.7), radius(0.077545), muzzleVelocity(DEFAULT_MUZZLE_VELOCITY), elevation(45.0), velocity(0, 0) // Initialize velocity
+       : mass(46.7), radius(0.077545), muzzleVelocity(DEFAULT_MUZZLE_VELOCITY), elevation(45), velocity(0, 0) // Initialize velocity
    {
        flightPath.clear();
    }
@@ -71,17 +72,36 @@ public:
 
    void generatePosition(const Position& upperRight)
    {
-       // Example implementation: Generate a random position within bounds
+       
        double x = rand() % static_cast<int>(upperRight.getMetersX());
-       double y = rand() % static_cast<int>(upperRight.getMetersY());
+       double y = 0;
        setPosition(x, y);
    }
 
    void raise(double delta)
    {
        // Adjust elevation by delta radians
-       double newElevation = elevation.getRadians() + delta;
-       elevation.setRadians(newElevation);
+       double radians = elevation.getRadians();
+       double newRadians = 0.0;
+       if (radians >= 0.0) 
+       {
+           if (delta < 0.0)
+           {
+               newRadians = radians + fabs(delta);
+           }
+           else 
+           {
+               newRadians = radians - delta;
+           }
+       }
+       else
+       {
+           if (delta < 0.0)
+           {
+              newRadians = radians - delta;
+           }
+       }
+       elevation.setRadians(newRadians);
    }
 
    void rotate(double deltaAngle)
@@ -100,13 +120,22 @@ public:
        elevation.setRadians(newAngle);
    }
 
-   void fire(double angle, double velocity)
+   void fire()
    {
-       Position initialPos = position;
-       Velocity initialVel(cos(angle * M_PI / 180) * velocity, sin(angle * M_PI / 180) * velocity);
+       //Position initialPos = position;
+       //Velocity initialVel(cos(angle * M_PI / 180) * velocity, sin(angle * M_PI / 180) * velocity);
+       //
+       //// Add to flight path
+       //flightPath.push_back({initialPos, initialVel, 0}); // Store position and velocity with time (initially 0)
        
+       Position initialPos(position);
+       double initialSpeed = muzzleVelocity;
+       Velocity initialV;
+       initialV.set(elevation, initialSpeed);
+       /*Velocity initialVel(cos(angle * M_PI / 180) * velocity, sin(angle * M_PI / 180) * velocity);*/
+
        // Add to flight path
-       flightPath.push_back({initialPos, initialVel, 0}); // Store position and velocity with time (initially 0)
+       flightPath.push_back({ initialPos, initialV, 1 }); // Store position and velocity with time (initially 0)
    }
 
    void advance()
