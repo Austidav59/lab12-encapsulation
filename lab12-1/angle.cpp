@@ -21,7 +21,7 @@ void Angle::setRadians(double radians)
    this->radians = normalize(radians);
 }
 
-Angle& Angle::add(double delta)
+Angle &Angle::add(double delta)
 {
    radians = normalize(radians + delta);
    return *this;
@@ -56,11 +56,11 @@ void Angle::setDxDy(double dx, double dy)
 }
 
 
-Angle Angle::operator+(double degrees) const
+Angle &Angle::operator+(double degrees) 
 {
-   Angle result(*this);
-   result.add(degrees);
-   return result;
+    double deltaInRadians = normalize(degrees * M_PI / 180.0);
+    this->add(deltaInRadians);
+    return *this;
 }
 
 double Angle::normalize(double radians) const

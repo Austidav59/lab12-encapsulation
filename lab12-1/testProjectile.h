@@ -12,6 +12,7 @@
 
 #include "projectile.h"
 #include "unitTest.h"
+#include "howitzer.h"
 
 
 using namespace std;
@@ -118,7 +119,9 @@ private:
     void fire_right() {
         Howitzer h;
         h.setPosition(111, 222); // Assuming setPosition sets initial position.
-        h.fire(90, 100); // Assuming fire takes angle and muzzle velocity.
+        h.setMuzzleVelocity(100);
+        h.setElevation(.5);
+        h.fire(); // Assuming fire takes angle and muzzle velocity.
 
         auto flightPath = h.getFlightPath();
         
@@ -141,7 +144,9 @@ private:
     void fire_left() {
         Howitzer h;
         h.setPosition(111, 222);
-        h.fire(-90, 100);
+        h.setMuzzleVelocity(100);
+        h.setElevation(-.5);
+        h.fire();
 
         auto flightPath = h.getFlightPath();
         
@@ -164,7 +169,9 @@ private:
     void fire_up() {
         Howitzer h;
         h.setPosition(111, 222);
-        h.fire(0, 100);
+        h.setMuzzleVelocity(100);
+        h.setElevation(0);
+        h.fire();
 
         auto flightPath = h.getFlightPath();
         
@@ -192,10 +199,13 @@ private:
     * output:  flightPath={}
     *********************************************/
     void advance_nothing() {
-      Howitzer h;
-      h.advance(); // Advance with no initial state set.
-      auto flightPath = h.getFlightPath();
-      assertUnit(flightPath.empty()); // Flight path should still be empty.
+        
+        Projectile p;
+        Projectile::PositionVelocityTime pvt;
+
+        p.advance(101);
+
+        assertEquals(p.flightPath.size(), 0);
     }
 
    /*********************************************
@@ -209,7 +219,20 @@ private:
     *********************************************/
    void advance_fall()
    {
-      assertUnit(NOT_YET_IMPLEMENTED);
+       Projectile p;
+       Projectile::PositionVelocityTime pvt;
+       pvt.pos = Position(100, 200);
+       pvt.v = Velocity(0, 0);
+       pvt.t = 100;
+
+       p.flightPath.push_back(pvt);
+       p.advance(101);
+
+       assertEquals(p.flightPath.back().pos.x, 100);
+       assertEquals(p.flightPath.back().pos.y, 195.0968);
+       assertEquals(p.flightPath.back().v.dx, 0);
+       assertEquals(p.flightPath.back().v.dy, -9.8064);
+       assertEquals(p.flightPath.back().t, 101.0);
    }
 
    /*********************************************
@@ -223,7 +246,23 @@ private:
     *********************************************/
    void advance_horizontal()
    {
-      assertUnit(NOT_YET_IMPLEMENTED);
+       Projectile p;
+       Projectile::PositionVelocityTime pvt;
+       pvt.pos = Position(100, 200);
+       pvt.v = Velocity(50, 0);
+       pvt.t = 100;
+
+       p.flightPath.push_back(pvt);
+       p.advance(101);
+
+       assertEquals(p.flightPath.back().pos.x, 149.9756);
+       assertEquals(p.flightPath.back().pos.y, 195.0968);
+       assertEquals(p.flightPath.back().v.dx, 49.9513);
+       assertEquals(p.flightPath.back().v.dy, -9.8064); 
+       assertEquals(p.flightPath.back().t, 101.0);
+
+
+
    }
 
    /*********************************************
@@ -237,7 +276,20 @@ private:
     *********************************************/
    void advance_up()
    {
-      assertUnit(NOT_YET_IMPLEMENTED);
+       Projectile p;
+       Projectile::PositionVelocityTime pvt;
+       pvt.pos = Position(100, 200);
+       pvt.v = Velocity(0, 100);
+       pvt.t = 100;
+
+       p.flightPath.push_back(pvt);
+       p.advance(101);
+
+       assertEquals(p.flightPath.back().pos.x, 100);
+       assertEquals(p.flightPath.back().pos.y, 294.9021);
+       assertEquals(p.flightPath.back().v.dx, 0);
+       assertEquals(p.flightPath.back().v.dy, 89.8042);
+       assertEquals(p.flightPath.back().t, 101.0);
    }
 
    /*********************************************
@@ -251,7 +303,20 @@ private:
     *********************************************/
    void advance_diagonalUp()
    {
-      assertUnit(NOT_YET_IMPLEMENTED);
+       Projectile p;
+       Projectile::PositionVelocityTime pvt;
+       pvt.pos = Position(100, 200);
+       pvt.v = Velocity(50, 40);
+       pvt.t = 100;
+
+       p.flightPath.push_back(pvt);
+       p.advance(101);
+
+       assertEquals(p.flightPath.back().pos.x, 149.9600);
+       assertEquals(p.flightPath.back().pos.y, 235.0648);
+       assertEquals(p.flightPath.back().v.dx, 49.9201);
+       assertEquals(p.flightPath.back().v.dy, 30.1297);
+       assertEquals(p.flightPath.back().t, 101.0);
    }
 
    /*********************************************
@@ -278,7 +343,7 @@ private:
       pvt.t = 100.0;
       p.flightPath.push_back(pvt);
       // exercise
-      p.advance(101.0);
+      p.advance(101);
       // verify
       assertUnit(p.flightPath.size() == 4);
       assertEquals(p.mass, 46.7);
