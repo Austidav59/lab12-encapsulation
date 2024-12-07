@@ -21,20 +21,17 @@
  {
      if (flightPath.empty()) return;
      PositionVelocityTime pvt = flightPath.back();
+     Angle ang = pvt.v.getAngle();
      double speed = pvt.v.getSpeed();
      double altitude = pvt.pos.getMetersY();
      double density = densityFromAltitude(altitude);
      double dragCoefficient = dragFromMach(speedSoundFromAltitude(altitude));
      double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
      double gravity = gravityFromAltitude(altitude);
-     double acceleration = windResistance / mass;
-     Angle ang = pvt.v.getAngle();
+     double acceleration = -(windResistance / mass); //negative because it is actually decceleration
+     
      Acceleration acc(0.0, 0.0);
-     acc.set(ang, acceleration);
-
-     Position lastPos = flightPath.back().pos;
-     Velocity lastVel = flightPath.back().v;
-     double area = M_PI * radius * radius;
+     acc.set(ang, windResistance);
 
      // Update position based on velocity and gravity using getX() and getY()
      double newX = pvt.pos.getMetersX() + pvt.v.getDX() * simulationTime + 0.5 * acc.getDDX() * simulationTime * simulationTime;

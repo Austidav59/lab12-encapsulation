@@ -16,7 +16,7 @@
 #include "uiDraw.h"
 
 #define DEFAULT_PROJECTILE_WEIGHT 46.7       // kg
-#define DEFAULT_PROJECTILE_RADIUS 0.077545   // m
+#define DEFAULT_PROJECTILE_RADIUS 0.077445   // m
 
 // forward declaration for the unit test class
 class TestProjectile; 

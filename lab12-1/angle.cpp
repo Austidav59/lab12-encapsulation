@@ -20,6 +20,10 @@ void Angle::setRadians(double radians)
 {
    this->radians = normalize(radians);
 }
+void Angle::setNaturalRadians(double radians)
+{
+    this->radians = radians; // Set without normalization
+}
 
 Angle &Angle::add(double delta)
 {

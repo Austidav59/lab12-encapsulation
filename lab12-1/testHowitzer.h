@@ -10,10 +10,10 @@
 #include "howitzer.h"
 #include "unitTest.h"
 
-/*******************************
- * TEST HOWITZER
- * A friend class for Howitzer which contains the Howitzer unit tests
- ********************************/
+ /*******************************
+  * TEST HOWITZER
+  * A friend class for Howitzer which contains the Howitzer unit tests
+  ********************************/
 class TestHowitzer : public UnitTest
 {
 public:
@@ -28,7 +28,7 @@ public:
         getElevation_up();
         getElevation_right();
         getElevation_left();
-        
+
         // Ticket 2: Setters
         generatePosition_small();
         generatePosition_large();
@@ -40,22 +40,45 @@ public:
         rotate_counterClock();
         rotate_wrapClock();
         rotate_wrapCounterClock();
-        
+
         report("Howitzer");
     }
 
 private:
     double metersFromPixels = -1.0;
 
+    /*****************************************************************
+    *****************************************************************
+    * CONSTRUCTOR
+    *****************************************************************
+    *****************************************************************/
+
+    /*********************************************
+     * name:    DEFAULT CONSTRUCTOR
+     * input:   nothing
+     * output:  zeros (except angle is at 45 degrees,
+     *                 and the muzzle velocity is correct)
+     *********************************************/
     void defaultConstructor()
     {
         Howitzer h;
         assertUnit(h.getPosition().getMetersX() == 0.0);
         assertUnit(h.getPosition().getMetersY() == 0.0);
-        assertUnit(fabs(h.getElevation() - M_PI/4.0) < 0.001);
+        assertUnit(fabs(h.getElevation() - M_PI / 4.0) < 0.001);
         assertUnit(fabs(h.getMuzzleVelocity() - 827.00) < 0.001);
     }
 
+    /*****************************************************************
+    *****************************************************************
+    * GETTERS
+    *****************************************************************
+    *****************************************************************/
+
+    /*********************************************
+     * name:    GET POSITION ZERO
+     * input:   h.pos=(0,0)
+     * output:  pos=(0,0)
+     *********************************************/
     void getPosition_zero()
     {
         Howitzer h;
@@ -64,6 +87,11 @@ private:
         assertUnit(pos.getMetersX() == 0.0 && pos.getMetersY() == 0.0);
     }
 
+    /*********************************************
+     * name:    GET POSITION MIDDLE
+     * input:   h.pos=(123.4, 567.8)
+     * output:  pos=(123.4, 567.8)
+     *********************************************/
     void getPosition_middle()
     {
         Howitzer h;
@@ -72,6 +100,11 @@ private:
         assertUnit(fabs(pos.getMetersX() - 123.4) < 0.001 && fabs(pos.getMetersY() - 567.8) < 0.001);
     }
 
+    /*********************************************
+     * name:    GET MUZZLE VELOCITY - SLOW SPEED
+     * input:   h.muzzleVelocity=(24.68)
+     * output:  m=24.68
+     *********************************************/
     void getMuzzleVelocity_slow()
     {
         Howitzer h;
@@ -79,6 +112,11 @@ private:
         assertUnit(fabs(h.getMuzzleVelocity() - 24.68) < 0.001);
     }
 
+    /*********************************************
+     * name:    GET MUZZLE VELOCITY - STANDARD SPEED
+     * input:   h.muzzleVelocity=(827.00)
+     * output:  m=827
+     *********************************************/
     void getMuzzleVelocity_standard()
     {
         Howitzer h;
@@ -86,6 +124,11 @@ private:
         assertUnit(fabs(h.getMuzzleVelocity() - 827.00) < 0.001);
     }
 
+    /*********************************************
+     * name:    GET ELEVATION - up
+     * input:   h.elevation=0
+     * output:  e=0
+     *********************************************/
     void getElevation_up()
     {
         Howitzer h;
@@ -93,6 +136,11 @@ private:
         assertUnit(fabs(h.getElevation() - 0.0) < 0.001);
     }
 
+    /*********************************************
+     * name:    GET ELEVATION - right
+     * input:   h.elevation=0.4
+     * output:  e=0.4
+     *********************************************/
     void getElevation_right()
     {
         Howitzer h;
@@ -100,6 +148,11 @@ private:
         assertUnit(fabs(h.getElevation() - 0.4) < 0.001);
     }
 
+    /*********************************************
+     * name:    GET ELEVATION - left
+     * input:   h.elevation=5.8
+     * output:  e=5.8
+     *********************************************/
     void getElevation_left()
     {
         Howitzer h;
@@ -107,36 +160,57 @@ private:
         assertUnit(fabs(h.getElevation() - 5.8) < 0.001);
     }
 
+    /*****************************************************************
+    *****************************************************************
+    * SETTERS
+    *****************************************************************
+    *****************************************************************/
+
+    /*********************************************
+     * name:    GENERATE POSITION small board
+     * input:   (10px, 10px)
+     * output:  1px <= x <= 9px
+     *********************************************/
     void generatePosition_small()
     {
         Howitzer h;
         Position posUpperRight;
         posUpperRight.setPixelsX(10);
         posUpperRight.setPixelsY(10);
-        
+
         h.generatePosition(posUpperRight);
-        
+
         Position pos = h.getPosition();
-        
+
         assertUnit(pos.getPixelsX() >= 1 && pos.getPixelsX() <= 9);
         assertUnit(pos.getPixelsY() == 0); // Ensure y is always zero
     }
 
+    /*********************************************
+     * name:    GENERATE POSITION large board
+     * input:   (1000px, 1000px)
+     * output:  100px <= x <= 900px
+     *********************************************/
     void generatePosition_large()
     {
         Howitzer h;
         Position posUpperRight;
         posUpperRight.setPixelsX(1000);
         posUpperRight.setPixelsY(1000);
-        
+
         h.generatePosition(posUpperRight);
-        
+
         Position pos = h.getPosition();
-        
+
         assertUnit(pos.getPixelsX() >= 100 && pos.getPixelsX() <= 900);
         assertUnit(pos.getPixelsY() == 0); // Ensure y is always zero
     }
 
+    /*********************************************
+     * name:    RAISE to the right/down
+     * input:   h.elevation=0.5radians  raise(-0.1)
+     * output:  h.elevation=0.6radians
+     *********************************************/
     void raise_rightDown()
     {
         Howitzer h;
@@ -145,6 +219,11 @@ private:
         assertUnit(fabs(h.getElevation() - 0.6) < 0.001);
     }
 
+    /*********************************************
+     * name:    RAISE to the right/up
+     * input:   h.elevation=0.5radians  raise(0.1)
+     * output:  h.elevation=0.4radians
+     *********************************************/
     void raise_rightUp()
     {
         Howitzer h;
@@ -153,6 +232,11 @@ private:
         assertUnit(fabs(h.getElevation() - 0.4) < 0.001);
     }
 
+    /*********************************************
+     * name:    RAISE to the left down
+     * input:   h.elevation=-0.5radians  raise(-0.1)
+     * output:  h.elevation=-0.6radians
+     *********************************************/
     void raise_leftDown()
     {
         Howitzer h;
@@ -161,6 +245,11 @@ private:
         assertUnit(fabs(h.getElevation() - (-0.6)) < 0.001);
     }
 
+    /*********************************************
+     * name:    RAISE to the left up
+     * input:   h.elevation=-0.5radians  raise(0.1)
+     * output:  h.elevation=0.4radians
+     *********************************************/
     void raise_leftUp()
     {
         Howitzer h;
@@ -169,6 +258,11 @@ private:
         assertUnit(fabs(h.getElevation() - (-0.4)) < 0.001);
     }
 
+    /*********************************************
+     * name:    ROTATE CLOCKWISE no wrapping
+     * input:   h.elevation=1.23 rotate=.3
+     * output:  h.elevation=1.53
+     *********************************************/
     void rotate_clock()
     {
         Howitzer h;
@@ -177,6 +271,11 @@ private:
         assertUnit(fabs(h.getElevation() - 1.53) < 0.001);
     }
 
+    /*********************************************
+     * name:    ROTATE COUNTER CLOCKWISE no wrapping
+     * input:   h.elevation=1.23 rotate=-.3
+     * output:  h.elevation=0.93
+     *********************************************/
     void rotate_counterClock()
     {
         Howitzer h;
@@ -185,6 +284,11 @@ private:
         assertUnit(fabs(h.getElevation() - 0.93) < 0.001);
     }
 
+    /*********************************************
+     * name:    ROTATE CLOCKWISE CLOCKWISE WRAP BY 2PI
+     * input:   h.elevation=6.1 (2pi + -0.1) rotate=.2
+     * output:  h.elevation=.1
+     *********************************************/
     void rotate_wrapClock()
     {
         Howitzer h;
@@ -193,6 +297,11 @@ private:
         assertUnit(fabs(h.getElevation() - 0.1) < 0.001);
     }
 
+    /*********************************************
+     * name:    ROTATE COUNTER CLOCKWISE WRAP BY 4PI
+     * input:   h.elevation=0.1 rotate=-.2 - 4PI
+     * output:  h.elevation=6.1 (2pi + -0.1)
+     *********************************************/
     void rotate_wrapCounterClock()
     {
         Howitzer h;
@@ -201,6 +310,13 @@ private:
         assertUnit(fabs(h.getElevation() - 6.1) < 0.001);
     }
 
+    /*****************************************************************
+    *****************************************************************
+    * STANDARD FIXTURE
+    *****************************************************************
+    *****************************************************************/
+
+    // setup standard fixture - set the zoom to 1100m per pixel
     void setupStandardFixture()
     {
         Position p;
@@ -208,6 +324,7 @@ private:
         p.metersFromPixels = 1100.0;
     }
 
+    // teardown the standard fixture - reset the zoom to what it was previously
     void teardownStandardFixture()
     {
         assert(metersFromPixels != -1.0);
