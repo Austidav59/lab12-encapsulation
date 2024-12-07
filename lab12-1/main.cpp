@@ -30,9 +30,27 @@ void callBack(const Interface* pUI, void* p)
    Simulator* pSim = (Simulator*)p;
 
    ogstream gout;
-   Position pos(10,10);
+   Position pos(10, 10);
    gout = pos;
-   gout << "Hello world";
+   // draw the game
+   pSim->display();
+
+   // handle input
+   if (pUI->isRight())
+   {
+       double degrees = pSim->a.getDegrees();
+       pSim->a.setDegrees(degrees + 5);
+   }
+   if (pUI->isLeft())
+   {
+       double degrees = pSim->a.getDegrees();
+       pSim->a.setDegrees(degrees - 5);
+   }
+   if (pUI->isSpace())
+   {
+       pSim->h.fire();
+   }
+   
 }
 
 double Position::metersFromPixels = 40.0;

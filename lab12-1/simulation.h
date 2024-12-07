@@ -8,16 +8,33 @@
  ************************************************************************/
 
 #pragma once
-#include "position.h"
+#include "position.h"    // everything should have a point
+#include "angle.h"       // angle of the lander
+#include "uiInteract.h"  // for INTERFACE
+#include "uiDraw.h"      // for RANDOM and DRAW*
+#include "ground.h"      // for GROUND
+#include "howitzer.h"
+#include "test.h"        // for the unit tests
+#include <cmath>         // for SQRT
+#include <cassert>       // for ASSERT
+using namespace std;
 
 
- /*********************************************
-  * Simulation
-  * Execute one simulation of a projectile being fired.
-  *********************************************/
+/*************************************************************************
+ * SIMULATOR
+ * Everything pertaining to the simulator.
+ *************************************************************************/
 class Simulator
 {
 public:
-   Simulator(const Position & posUpperRight) {}
+    // set up the simulator
+    Simulator(const Position& posUpperRight) : ground(posUpperRight), a(0.0), phase(255) {}
 
+    // display stuff on the screen
+    void display();
+
+    unsigned char phase;
+    Angle a;
+    Ground ground;
+    Howitzer h;
 };
