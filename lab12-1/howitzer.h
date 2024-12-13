@@ -120,24 +120,6 @@ public:
         elevation.setRadians(newAngle); // Handles normalization
     }
 
-    void fire()
-    {
-        //Position initialPos = position;
-        //Velocity initialVel(cos(angle * M_PI / 180) * velocity, sin(angle * M_PI / 180) * velocity);
-        //
-        //// Add to flight path
-        //flightPath.push_back({initialPos, initialVel, 0}); // Store position and velocity with time (initially 0)
-
-        Position initialPos(position);
-        double initialSpeed = muzzleVelocity;
-        Velocity initialV;
-        initialV.set(elevation, initialSpeed);
-        /*Velocity initialVel(cos(angle * M_PI / 180) * velocity, sin(angle * M_PI / 180) * velocity);*/
-
-        // Add to flight path
-        flightPath.push_back({ initialPos, initialV, 1 }); // Store position and velocity with time (initially 0)
-    }
-
     void advance()
     {
         if (flightPath.empty()) return;

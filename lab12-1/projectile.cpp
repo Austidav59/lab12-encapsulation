@@ -19,43 +19,58 @@
 
  void Projectile::advance(double simulationTime)
  {
-     if (flightPath.empty()) return;
+     if (!flying()) return;
+
      PositionVelocityTime pvt = flightPath.back();
-     Angle ang = pvt.v.getAngle();
      double speed = pvt.v.getSpeed();
      double altitude = pvt.pos.getMetersY();
+     double interval = simulationTime - currentTime();
+     assert(interval > 0.0);
+
+
      double density = densityFromAltitude(altitude);
-     double dragCoefficient = dragFromMach(speedSoundFromAltitude(altitude));
+     double speedSound = speedSoundFromAltitude(altitude);
+     double mach = speed / speedSound;
+     double dragCoefficient = dragFromMach(mach);
      double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
-     double gravity = gravityFromAltitude(altitude);
-     double acceleration = -(windResistance / mass); //negative because it is actually decceleration
-     
-     Acceleration acc(0.0, 0.0);
-     acc.set(ang, windResistance);
+     double magnitudeWind = -(windResistance / mass); //negative because it is causing decceleration
+     Angle ang = pvt.v.getAngle();
+     Acceleration aWind(0.0, 0.0);
+     ang.setRadians(-ang.getRadians());
+     aWind.set(ang, magnitudeWind);
 
-     // Update position based on velocity and gravity using getX() and getY()
-     double newX = pvt.pos.getMetersX() + pvt.v.getDX() * simulationTime + 0.5 * acc.getDDX() * simulationTime * simulationTime;
-     double newY = pvt.pos.getMetersY() + pvt.v.getDY() * simulationTime + 0.5 * (acc.getDDY() - gravity) * simulationTime * simulationTime;
-     Position newPos(newX, newY);
+     double magnitudeGravity = gravityFromAltitude(altitude);
+     Angle angleGravity;
+     angleGravity.setDown();
+     Acceleration aGravity(0.0, 0.0);
+     aGravity.set(angleGravity, magnitudeGravity);
 
-     // Update velocity based on gravity
-     double newDX = pvt.v.getDX() + acc.getDDX() * simulationTime;
-     double newDY = pvt.v.getDY() + (acc.getDDY() - gravity) * simulationTime;
-     Velocity newV(newDX, newDY);
+     Acceleration aTotal(0.0, 0.0);
+     double x = aGravity.getDDX() + aWind.getDDX();
+     double y = aGravity.getDDY() + aWind.getDDY();
+     aTotal.set(x,y);
 
-     Projectile::PositionVelocityTime newPVT;
-     newPVT.pos = newPos;
-     newPVT.v = newV;
-     newPVT.t = simulationTime;
+     pvt.pos.add(aTotal, pvt.v, interval);
+     pvt.v.add(aTotal, interval);
+     pvt.t = simulationTime;
 
 
      // Store new state in flight path
-     flightPath.push_back(newPVT);
+     flightPath.push_back(pvt);
  }
 
- /*void Projectile::fire()
+ void Projectile::fire(const Position &posHowitzer,
+     double simulationTime,
+     const Angle &elevation,
+     double muzzleVelocity)
  {
-     
- }*/
+     reset();
+
+     PositionVelocityTime pvt;
+     pvt.pos = posHowitzer;
+     pvt.t = simulationTime;
+     pvt.v.set(elevation, muzzleVelocity);
+     flightPath.push_back(pvt);
+ }
 
  

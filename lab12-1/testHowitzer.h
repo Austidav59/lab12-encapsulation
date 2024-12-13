@@ -61,11 +61,15 @@ private:
      *********************************************/
     void defaultConstructor()
     {
+        setupStandardFixture();
+
         Howitzer h;
-        assertUnit(h.getPosition().getMetersX() == 0.0);
-        assertUnit(h.getPosition().getMetersY() == 0.0);
+        assertUnit(h.position.x == 0.0);
+        assertUnit(h.position.y == 0.0);
         assertUnit(fabs(h.getElevation() - M_PI / 4.0) < 0.001);
-        assertUnit(fabs(h.getMuzzleVelocity() - 827.00) < 0.001);
+        assertUnit(h.muzzleVelocity, 827);
+
+        teardownStandardFixture();
     }
 
     /*****************************************************************
@@ -82,9 +86,15 @@ private:
     void getPosition_zero()
     {
         Howitzer h;
-        h.setPosition(0.0, 0.0);
-        Position pos = h.getPosition();
-        assertUnit(pos.getMetersX() == 0.0 && pos.getMetersY() == 0.0);
+        h.position.x = 0.0;
+        h.position.y = 0.0;
+        Position pos;
+        pos.x = 99.99;
+        pos.y = 88.88;
+
+        pos = h.getPosition();
+
+        assertUnit(pos.x == 0.0 && pos.y == 0.0);
     }
 
     /*********************************************
@@ -96,8 +106,8 @@ private:
     {
         Howitzer h;
         h.setPosition(123.4, 567.8);
-        Position pos = h.getPosition();
-        assertUnit(fabs(pos.getMetersX() - 123.4) < 0.001 && fabs(pos.getMetersY() - 567.8) < 0.001);
+        Position pos = h.position;
+        assertUnit(fabs(pos.x - 123.4) < 0.001 && fabs(pos.y - 567.8) < 0.001);
     }
 
     /*********************************************
@@ -109,7 +119,7 @@ private:
     {
         Howitzer h;
         h.setMuzzleVelocity(24.68);
-        assertUnit(fabs(h.getMuzzleVelocity() - 24.68) < 0.001);
+        assertUnit(fabs(h.muzzleVelocity - 24.68) < 0.001);
     }
 
     /*********************************************
@@ -121,7 +131,7 @@ private:
     {
         Howitzer h;
         h.setMuzzleVelocity(827.00);
-        assertUnit(fabs(h.getMuzzleVelocity() - 827.00) < 0.001);
+        assertUnit(fabs(h.muzzleVelocity - 827.00) < 0.001);
     }
 
     /*********************************************
@@ -180,9 +190,9 @@ private:
 
         h.generatePosition(posUpperRight);
 
-        Position pos = h.getPosition();
+        Position pos = h.position;
 
-        assertUnit(pos.getPixelsX() >= 1 && pos.getPixelsX() <= 9);
+        assertUnit(pos.getPixelsX() >= 1 && pos.x <= 9);
         assertUnit(pos.getPixelsY() == 0); // Ensure y is always zero
     }
 
@@ -291,10 +301,14 @@ private:
      *********************************************/
     void rotate_wrapClock()
     {
+        setupStandardFixture();
         Howitzer h;
-        h.setElevation(6.1);
-        h.rotate(0.2);
-        assertUnit(fabs(h.getElevation() - 0.1) < 0.001);
+        h.elevation.radians = 6.1;
+        h.rotate(0.2 - (4.0 * M_PI));
+
+        assertUnit(h.elevation.radians, 0.1);
+
+        teardownStandardFixture();
     }
 
     /*********************************************
@@ -304,10 +318,14 @@ private:
      *********************************************/
     void rotate_wrapCounterClock()
     {
+        setupStandardFixture();
         Howitzer h;
-        h.setElevation(0.1);
-        h.rotate(-0.2 - 4 * M_PI);
-        assertUnit(fabs(h.getElevation() - 6.1) < 0.001);
+        h.elevation.radians = 0.1;
+        h.rotate(-0.2 - (4.0 * M_PI));
+
+        assertUnit(h.elevation.radians, M_PI * 2.0 - 0.1);
+
+        teardownStandardFixture();
     }
 
     /*****************************************************************

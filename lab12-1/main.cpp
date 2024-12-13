@@ -48,7 +48,7 @@ void callBack(const Interface* pUI, void* p)
    }
    if (pUI->isSpace())
    {
-       pSim->h.fire();
+       /*pSim->p.fire();*/
    }
    
 }

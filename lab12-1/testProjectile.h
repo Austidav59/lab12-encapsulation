@@ -118,23 +118,32 @@ private:
      * output: flightPath={pos=111,222 v=100,0 t=1}
      *********************************************/
     void fire_right() {
-        Howitzer h;
-        h.setPosition(111, 222); // Assuming setPosition sets initial position.
-        h.setMuzzleVelocity(100);
-        h.setElevation(1.570796);
-        h.fire(); // Assuming fire takes angle and muzzle velocity.
+        setupStandardFixture();
+        Projectile p;
+        Position pos;
+        pos.x = 111.0;
+        pos.y = 222.0;
+        double simulationTime(1.0);
+        Angle angle;
+        angle.radians = M_PI / 2.0;
+        double muzzleVelocity(100.0);
 
-        auto flightPath = h.getFlightPath();
-        
-        assertUnit(flightPath.size() == 1); // Check one entry in flight path.
-        
-        assertUnit(fabs(flightPath.back().pos.getMetersX() - 111) < 0.001);
-        assertUnit(fabs(flightPath.back().pos.getMetersY() - 222) < 0.001);
-        
-        assertUnit(fabs(flightPath.back().v.getDX() - 100) < 0.001);
-        assertUnit(fabs(flightPath.back().v.getDY()) < 0.001); // Should be zero for horizontal fire.
-        
-        assertUnit(flightPath.back().t == 1); // Assuming time is calculated as per your logic.
+        p.fire(pos, simulationTime, angle.radians, muzzleVelocity);
+
+        assertUnit(p.flightPath.size() == 1);
+        assertEquals(p.mass, 46.7);
+        assertEquals(p.radius, 0.077545);
+        assertUnit(!p.flightPath.empty());
+        if (!p.flightPath.empty())
+        {
+            assertEquals(p.flightPath.front().pos.x, 111.0);
+            assertEquals(p.flightPath.front().pos.y, 222.0);
+            assertEquals(p.flightPath.front().v.dx, 100.0);
+            assertEquals(p.flightPath.front().v.dy, 0.0);
+            assertEquals(p.flightPath.front().t, 1.0);
+        }
+
+        teardownStandardFixture();
     }
 
     /*********************************************
@@ -143,23 +152,32 @@ private:
      * output: flightPath={pos=111,222 v=-100,0 t=1}
      *********************************************/
     void fire_left() {
-        Howitzer h;
-        h.setPosition(111, 222);
-        h.setMuzzleVelocity(100);
-        h.setElevation(-1.570796);
-        h.fire();
+        setupStandardFixture();
+        Projectile p;
+        Position pos;
+        pos.x = 111.0;
+        pos.y = 222.0;
+        double simulationTime(1.0);
+        Angle angle;
+        angle.radians = (M_PI / -2.0);
+        double muzzleVelocity(100.0);
 
-        auto flightPath = h.getFlightPath();
-        
-        assertUnit(flightPath.size() == 1); // Check one entry in flight path.
-        
-        assertUnit(fabs(flightPath.back().pos.getMetersX() - 111) < 0.001);
-        assertUnit(fabs(flightPath.back().pos.getMetersY() - 222) < 0.001);
-        
-        assertUnit(fabs(flightPath.back().v.getDX() + 100) < 0.001); // Velocity should be negative for left.
-        assertUnit(fabs(flightPath.back().v.getDY()) < 0.001); // Should be zero for horizontal fire.
-        
-        assertUnit(flightPath.back().t == 1); // Assuming time is calculated as per your logic.
+        p.fire(pos, simulationTime, angle.radians, muzzleVelocity);
+
+        assertUnit(p.flightPath.size() == 1);
+        assertEquals(p.mass, 46.7);
+        assertEquals(p.radius, 0.077545);
+        assertUnit(!p.flightPath.empty());
+        if (!p.flightPath.empty())
+        {
+            assertEquals(p.flightPath.front().pos.x, 111.0);
+            assertEquals(p.flightPath.front().pos.y, 222.0);
+            assertEquals(p.flightPath.front().v.dx, -100.0);
+            assertEquals(p.flightPath.front().v.dy, 0.0);
+            assertEquals(p.flightPath.front().t, 1.0);
+        }
+
+        teardownStandardFixture();
     }
 
     /*********************************************
@@ -168,25 +186,32 @@ private:
      * output: flightPath={pos=111,222 v=0,100 t=1}
      *********************************************/
     void fire_up() {
-        Howitzer h;
-        h.setPosition(111, 222);
-        h.setMuzzleVelocity(100);
-        h.setElevation(0.0);
-        h.fire();
+        setupStandardFixture();
+        Projectile p;
+        Position pos;
+        pos.x = 111.0;
+        pos.y = 222.0;
+        double simulationTime(1.0);
+        Angle angle;
+        angle.radians = 0.0;
+        double muzzleVelocity(100.0);
 
-        auto flightPath = h.getFlightPath();
-        
-        assertUnit(flightPath.size() == 1);
-        
-        assertUnit(fabs(flightPath.back().pos.getMetersX() - 111) < 0.001);
-        
-        assertUnit(fabs(flightPath.back().pos.getMetersY() - 222) < 0.001);
-        
-        assertUnit(fabs(flightPath.back().v.getDX()) < 0.001);
-        
-        assertUnit(fabs(flightPath.back().v.getDY() - (100)) < 0.001);
-        
-        assertUnit(flightPath.back().t == 1);
+        p.fire(pos, simulationTime, angle.radians, muzzleVelocity);
+
+        assertUnit(p.flightPath.size() == 1);
+        assertEquals(p.mass, 46.7);
+        assertEquals(p.radius, 0.077545);
+        assertUnit(!p.flightPath.empty());
+        if (!p.flightPath.empty())
+        {
+            assertEquals(p.flightPath.front().pos.x, 111.0);
+            assertEquals(p.flightPath.front().pos.y, 222.0);
+            assertEquals(p.flightPath.front().v.dx, 0.0);
+            assertEquals(p.flightPath.front().v.dy, 100.0);
+            assertEquals(p.flightPath.front().t, 1.0);
+        }
+
+        teardownStandardFixture();
     }
    /*****************************************************************
     *****************************************************************
@@ -202,11 +227,16 @@ private:
     void advance_nothing() {
         
         Projectile p;
-        Projectile::PositionVelocityTime pvt;
+        p.mass = 333.3;
+        p.radius = 444.4;
 
-        p.advance(101);
+        p.advance(1.0);
 
-        assertEquals(p.flightPath.size(), 0);
+        assertUnit(p.flightPath.empty() == true);
+        assertEquals(p.mass, 333.3);
+        assertEquals(p.radius, 444.4);
+
+        teardownStandardFixture();
     }
 
    /*********************************************
@@ -220,20 +250,31 @@ private:
     *********************************************/
    void advance_fall()
    {
+       setupStandardFixture();
+       Position pos;
        Projectile p;
        Projectile::PositionVelocityTime pvt;
-       pvt.pos = Position(100, 200);
-       pvt.v = Velocity(0, 0);
+       pvt.pos.x = 100.0;
+       pvt.pos.y = 200.0;
+       pvt.v.dx = 0.0;
+       pvt.v.dy = 0.0;
        pvt.t = 100;
-
        p.flightPath.push_back(pvt);
-       p.advance(101);
 
-       assertEquals(p.flightPath.back().pos.x, 100);
-       assertEquals(p.flightPath.back().pos.y, 195.0968);
-       assertEquals(p.flightPath.back().v.dx, 0);
-       assertEquals(p.flightPath.back().v.dy, -9.8064);
-       assertEquals(p.flightPath.back().t, 101.0);
+       p.advance(101.0);
+
+       assertUnit(p.flightPath.size() == 2);
+       assertEquals(p.mass, 46.7);
+       assertEquals(p.radius, 0.077545);
+       assertUnit(!p.flightPath.empty());
+       if (!p.flightPath.empty())
+       {
+           assertEquals(p.flightPath.back().pos.x, 100.0);
+           assertEquals(p.flightPath.back().pos.y, 195.0968); 
+           assertEquals(p.flightPath.back().v.dx, 0.0);
+           assertEquals(p.flightPath.back().v.dy, -9.8064);
+           assertEquals(p.flightPath.back().t, 101.0);
+       }
    }
 
    /*********************************************
@@ -257,14 +298,18 @@ private:
        p.flightPath.push_back(pvt);
        p.advance(101);
 
-       assertEquals(p.flightPath.back().pos.x, 149.9756);
-       assertEquals(p.flightPath.back().pos.y, 195.0968);
-       assertEquals(p.flightPath.back().v.dx, 49.9513);
-       assertEquals(p.flightPath.back().v.dy, -9.8064); 
-       assertEquals(p.flightPath.back().t, 101.0);
-
-
-
+       assertUnit(p.flightPath.size() == 2);
+       assertEquals(p.mass, 46.7);
+       assertEquals(p.radius, 0.077545);
+       assertUnit(!p.flightPath.empty());
+       if (!p.flightPath.empty())
+       {
+           assertEquals(p.flightPath.back().pos.x, 149.9756);
+           assertEquals(p.flightPath.back().pos.y, 195.0968);
+           assertEquals(p.flightPath.back().v.dx, 49.9513);
+           assertEquals(p.flightPath.back().v.dy, -9.8064);
+           assertEquals(p.flightPath.back().t, 101.0);
+       }
    }
 
    /*********************************************
@@ -351,8 +396,9 @@ private:
       // verify
       assertUnit(p.flightPath.size() == 4);
       assertEquals(p.mass, 46.7);
-      assertEquals(p.radius, 0.077445);
+      assertEquals(p.radius, 0.077545);
       assertUnit(!p.flightPath.empty());
+
       if (!p.flightPath.empty())
       {
          assertEquals(p.flightPath.back().pos.x, 149.9601); // 100 + 50*1 + .5(-0.0799)*1*1
