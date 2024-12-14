@@ -9,20 +9,30 @@
 
  #include "simulation.h"  // for SIMULATION
  #include "uiDraw.h"      // for RANDOM and DRAW*
+ #include <ctime>  	// for the time function
+using namespace std;
+
 
  /**********************************************************
   * DISPLAY
   * Draw on the screen
   **********************************************************/
-void Simulator::display()
+void Simulator::display(Position posUpperRight)
 {
-    ogstream gout;
+	double elevation = ground.getElevationMeters(posUpperRight);
+	ogstream gout;
+	Position pos(elevation,0.0);
+	gout = pos;
+	gout << "Helow World\n";
 
     /*draw the ground*/
-    ground.draw(gout);
+	ground.draw(gout);
+	gout.drawTarget(ground.getTarget());
 
-    /*draw the lander*/
-    gout.drawHowitzer(Position(200, 200), a.getRadians(), 1.0);
-    gout.drawProjectile(Position(200, 200), 1.0);
+    /*draw the Howitzer*/
+    gout.drawHowitzer(h.getPosition(), a.getRadians(), 0.0);
+
+	/*draw the projectile*/
+	gout.drawProjectile(p.getPosition(), p.getFlightTime());
 
 }

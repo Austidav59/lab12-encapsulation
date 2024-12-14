@@ -739,7 +739,7 @@ private:
       dy = a.getDy();
 
       // verify
-      assertEquals(dy, 0.0);
+      assertEquals(dy, 1.0);
       assertEquals(a.radians, 0.0);
    }
 
@@ -759,7 +759,7 @@ private:
       dy = a.getDy();
 
       // verify
-      assertEquals(dy, 0.0);
+      assertEquals(dy, -1.0);
       assertEquals(a.radians, M_PI);
    }
 

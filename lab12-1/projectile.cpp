@@ -34,29 +34,23 @@
      double dragCoefficient = dragFromMach(mach);
      double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
      double magnitudeWind = -(windResistance / mass); //negative because it is causing decceleration
-     Angle ang = pvt.v.getAngle();
-     Acceleration aWind(0.0, 0.0);
-     ang.setRadians(-ang.getRadians());
-     aWind.set(ang, magnitudeWind);
+     Acceleration aWind(-pvt.v.getAngle(), magnitudeWind);
 
      double magnitudeGravity = gravityFromAltitude(altitude);
      Angle angleGravity;
      angleGravity.setDown();
-     Acceleration aGravity(0.0, 0.0);
-     aGravity.set(angleGravity, magnitudeGravity);
+     Acceleration aGravity(angleGravity, magnitudeGravity);
 
-     Acceleration aTotal(0.0, 0.0);
-     double x = aGravity.getDDX() + aWind.getDDX();
-     double y = aGravity.getDDY() + aWind.getDDY();
-     aTotal.set(x,y);
+	 Acceleration aTotal = aGravity + aWind;
 
-     pvt.pos.add(aTotal, pvt.v, interval);
-     pvt.v.add(aTotal, interval);
-     pvt.t = simulationTime;
+	 PositionVelocityTime newPVT = pvt;
+     newPVT.pos.add(aTotal, pvt.v, interval);
+     newPVT.v.add(aTotal, interval);
+     newPVT.t = simulationTime;
 
 
      // Store new state in flight path
-     flightPath.push_back(pvt);
+     flightPath.push_back(newPVT);
  }
 
  void Projectile::fire(const Position &posHowitzer,

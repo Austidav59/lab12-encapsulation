@@ -15,31 +15,18 @@
 // Define the static member variable
 //double Position::metersFromPixels = 1.0;
 
-Position::Position(double x, double y) : x(x), y(y)
+Position::Position(double x, double y) : x(0.0), y(0.0)
 {
+    setMetersX(x);
+	setMetersY(y);
 }
 
-Position& Position::operator = (const Position& posRHS)
+Position& Position::operator = (const Position& pt)
 {
-   if (this != &posRHS)
-   {
-      x = posRHS.x;
-      y = posRHS.y;
-   }
-   return *this;
+	x = pt.x;
+	y = pt.y;
+	return *this;
 }
-
-double Position::getPixelsX() const { return x / metersFromPixels; }
-double Position::getPixelsY() const { return y / metersFromPixels; }
-
-void Position::setZoom(double z) { metersFromPixels = z; }
-double Position::getZoom() { return metersFromPixels; }
-
-void Position::setPixelsX(double xPixels) { x = xPixels * metersFromPixels; }
-void Position::setPixelsY(double yPixels) { y = yPixels * metersFromPixels; }
-
-double Position::addPixelsX(double dx) { x += dx * metersFromPixels; return x; }
-double Position::addPixelsY(double dy) { y += dy * metersFromPixels; return y; }
 
 void Position::add(const Acceleration& a, const Velocity& v, double t)
 {

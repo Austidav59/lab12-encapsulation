@@ -41,7 +41,6 @@ public:
       advance_up();
       advance_diagonalUp();
       advance_diagonalDown();
-      /*advance_teacherEx();*/
 
       report("Projectile");
    }
@@ -128,7 +127,7 @@ private:
         angle.radians = M_PI / 2.0;
         double muzzleVelocity(100.0);
 
-        p.fire(pos, simulationTime, angle.radians, muzzleVelocity);
+        p.fire(pos, simulationTime, angle, muzzleVelocity);
 
         assertUnit(p.flightPath.size() == 1);
         assertEquals(p.mass, 46.7);
@@ -159,10 +158,10 @@ private:
         pos.y = 222.0;
         double simulationTime(1.0);
         Angle angle;
-        angle.radians = (M_PI / -2.0);
+        angle.radians = M_PI / -2.0;
         double muzzleVelocity(100.0);
 
-        p.fire(pos, simulationTime, angle.radians, muzzleVelocity);
+        p.fire(pos, simulationTime, angle, muzzleVelocity);
 
         assertUnit(p.flightPath.size() == 1);
         assertEquals(p.mass, 46.7);
@@ -291,11 +290,14 @@ private:
        setupStandardFixture();
        Projectile p;
        Projectile::PositionVelocityTime pvt;
-       pvt.pos = Position(100, 200);
-       pvt.v = Velocity(50, 0);
-       pvt.t = 100;
+       pvt.pos.x = 100.0;
+	   pvt.pos.y = 200.0;
+	   pvt.v.dx = 50.0;
+	   pvt.v.dy = 0.0;
+	   pvt.t = 100.0;
 
        p.flightPath.push_back(pvt);
+
        p.advance(101);
 
        assertUnit(p.flightPath.size() == 2);
@@ -410,34 +412,6 @@ private:
       // teardown
       teardownStandardFixture();
    }
-   /*********************************************
-    * name:    ADVANCE : the projectile is traveling up, no horizontal position change
-    * input:   flightPath={pos=100,200 v=0,100 t=100}
-    * output:  flightPath={}{pos.x=100      = 0   + 0*1   + .5(0)*1*1
-    *                        pos.y=294.9021 = 200 + 100*1 + .5(-9.8064-.3893)*1*1
-    *                        v.dx =0        = 0   + 0*1
-    *                        v.dy =89.8042  = 100 + (-9.8064-.3893)
-    *                        t=101}
-    *********************************************/
-  /* void advance_teacherEx()
-   {
-       setupStandardFixture();
-       Projectile p;
-       Projectile::PositionVelocityTime pvt;
-       pvt.pos = Position(0, 0);
-       pvt.v = Velocity(413.5, 716.2);
-       pvt.t = 1;
-
-       p.flightPath.push_back(pvt);
-       p.advance(2);
-       
-       cout << "Enter Example" << endl;
-       assertEquals(p.flightPath.back().pos.x, 402.53);
-       assertEquals(p.flightPath.back().pos.y, 691.31);
-       assertEquals(p.flightPath.back().v.dx, 391.56);
-       assertEquals(p.flightPath.back().v.dy, 668.40);
-       assertEquals(p.flightPath.back().t, 2.0);
-   }*/
 
    /*****************************************************************
     *****************************************************************
