@@ -19,14 +19,12 @@ using namespace std;
   **********************************************************/
 void Simulator::display(Position posUpperRight)
 {
-	double elevation = ground.getElevationMeters(posUpperRight);
 	ogstream gout;
-	Position pos(elevation,0.0);
-	gout = pos;
-	gout << "Helow World\n";
 
     /*draw the ground*/
 	ground.draw(gout);
+
+	/*draw the target*/
 	gout.drawTarget(ground.getTarget());
 
     /*draw the Howitzer*/

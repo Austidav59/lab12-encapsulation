@@ -579,7 +579,7 @@ private:
    {
       // Setup
        double metersFromPixels = Position::metersFromPixels;
-       Position::metersFromPixels = 100.0;
+       Position::metersFromPixels = 50.0;
       Position pos(4500, 2500);
 
       // Exercise

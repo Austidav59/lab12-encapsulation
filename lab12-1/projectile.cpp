@@ -25,7 +25,7 @@
      double speed = pvt.v.getSpeed();
      double altitude = pvt.pos.getMetersY();
      double interval = simulationTime; //- currentTime();
-     assert(interval > -0.0001);
+     assert(interval > 0.0);
 
 
      double density = densityFromAltitude(altitude);
@@ -33,7 +33,7 @@
      double mach = speed / speedSound;
      double dragCoefficient = dragFromMach(mach);
      double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
-     double magnitudeWind = -(windResistance / mass); //negative because it is causing decceleration
+     double magnitudeWind = (windResistance / mass); //negative because it is causing decceleration
      Acceleration aWind(-pvt.v.getAngle(), magnitudeWind);
 
      double magnitudeGravity = gravityFromAltitude(altitude);

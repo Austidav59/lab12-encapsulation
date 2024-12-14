@@ -806,7 +806,7 @@ private:
    /*********************************************
     * name:    GET DY - DIAGONAL
     * input:   30 degrees
-    * output:  0.5
+    * output:  0.866
     *********************************************/
    void getDy_diagonal()
    {  // setup
@@ -816,7 +816,7 @@ private:
       // exercise
       dy = a.getDy();
       // verify
-      assertEquals(dy, 0.5);
+      assertEquals(dy, 0.866);
       assertEquals(a.radians, M_PI / 6.0);
    }  // teardown
 

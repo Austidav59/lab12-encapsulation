@@ -33,7 +33,7 @@ void callBack(const Interface* pUI, void* p)
    // advance the game
    if (pSim->p.flying())
    {
-	   pSim->time += .03;
+	   pSim->time += .05;
 	   pSim->p.advance(pSim->time);
    }
    
