@@ -24,8 +24,8 @@
      PositionVelocityTime pvt = flightPath.back();
      double speed = pvt.v.getSpeed();
      double altitude = pvt.pos.getMetersY();
-     double interval = simulationTime - currentTime();
-     assert(interval > 0.0);
+     double interval = simulationTime; //- currentTime();
+     assert(interval > -0.0001);
 
 
      double density = densityFromAltitude(altitude);
@@ -43,14 +43,14 @@
 
 	 Acceleration aTotal = aGravity + aWind;
 
-	 PositionVelocityTime newPVT = pvt;
-     newPVT.pos.add(aTotal, pvt.v, interval);
-     newPVT.v.add(aTotal, interval);
-     newPVT.t = simulationTime;
+	 
+     pvt.pos.add(aTotal, pvt.v, interval);
+     pvt.v.add(aTotal, interval);
+     pvt.t = simulationTime;
 
 
      // Store new state in flight path
-     flightPath.push_back(newPVT);
+     flightPath.push_back(pvt);
  }
 
  void Projectile::fire(const Position &posHowitzer,

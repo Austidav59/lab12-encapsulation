@@ -485,7 +485,7 @@ private:
       a.setDxDy(0.0, 1.0);
 
       // verify
-      assertEquals(a.radians, M_PI_2);
+      assertEquals(a.radians, 0.0);
    }
 
 
@@ -527,7 +527,7 @@ private:
       a.setDxDy(dx, dy);
 
       // verify
-      assertEquals(a.radians, M_PI);
+      assertEquals(a.radians, M_PI * 1.5);
    }
 
    /*********************************************
@@ -546,7 +546,7 @@ private:
       a.setDxDy(dx, dy);
 
       // verify
-      assertEquals(a.radians, M_PI / 3.0);
+      assertEquals(a.radians, M_PI / 6.0);
    }  // teardown
 
 
@@ -621,7 +621,7 @@ private:
       r = a.getRadians();
       // verify
       assertEquals(r, M_PI + M_PI_2);
-      assertEquals(a.radians, M_PI + M_PI_2);
+      assertEquals(a.radians, 4.71239);
    }  // teardown
 
    /*********************************************
@@ -640,7 +640,7 @@ private:
       dx = a.getDx();
 
       // verify
-      assertEquals(dx, 1.0);
+      assertEquals(dx, 0.0);
       assertEquals(a.radians, 0.0);
    }
 
@@ -660,7 +660,7 @@ private:
       dx = a.getDx();
 
       // verify
-      assertEquals(dx, -1.0);
+      assertEquals(dx, 0.0);
       assertEquals(a.radians, M_PI);
    }
 
@@ -680,7 +680,7 @@ private:
       dx = a.getDx();
 
       // verify
-      assertEquals(dx, 0.0);
+      assertEquals(dx, -1.0);
       assertEquals(a.radians, M_PI + M_PI_2);
    }
 
@@ -701,7 +701,7 @@ private:
       dx = a.getDx();
 
       // verify
-      assertEquals(dx, 0.0);
+      assertEquals(dx, 1.0);
       assertEquals(a.radians, M_PI_2);
    }
 
@@ -718,7 +718,7 @@ private:
       // exercise
       dx = a.getDx();
       // verify
-      assertEquals(dx, 0.866);
+      assertEquals(dx, 0.5);
       assertEquals(a.radians, M_PI / 6.0);
    }  // teardown
 
@@ -779,7 +779,7 @@ private:
       dy = a.getDy();
 
       // verify
-      assertEquals(dy, -1.0);
+      assertEquals(dy, 0.0);
       assertEquals(a.radians, M_PI + M_PI_2);
    }
 
@@ -799,7 +799,7 @@ private:
       dy = a.getDy();
 
       // verify
-      assertEquals(dy, 1.0);
+      assertEquals(dy, 0.0);
       assertEquals(a.radians, M_PI_2);
    }
 

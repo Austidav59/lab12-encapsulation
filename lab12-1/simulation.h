@@ -28,7 +28,7 @@ class Simulator
 {
 public:
     // set up the simulator
-    Simulator(const Position& posUpperRight) : ground(posUpperRight), a(0.0), time(0.001) {}
+    Simulator(const Position& posUpperRight) : ground(posUpperRight), a(0.0), time(0.003) {}
 
     // display stuff on the screen
     void display(Position posUpperRight);

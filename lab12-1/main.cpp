@@ -31,8 +31,11 @@ void callBack(const Interface* pUI, void* p)
 
    
    // advance the game
-   pSim->time += .30;
-   pSim->p.advance(pSim->time);
+   if (pSim->p.flying())
+   {
+	   pSim->time += .03;
+	   pSim->p.advance(pSim->time);
+   }
    
 
    // draw the game
