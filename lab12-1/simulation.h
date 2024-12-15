@@ -28,13 +28,15 @@ class Simulator
 {
 public:
     // set up the simulator
-    Simulator(const Position& posUpperRight) : ground(posUpperRight), a(0.0), phase(255) {}
+    Simulator(const Position& posUpperRight) : ground(posUpperRight), a(0.0), time(0.003) {}
 
     // display stuff on the screen
-    void display();
+    void display(Position posUpperRight);
 
-    unsigned char phase;
+    Position posUpperRight = posUpperRight;
     Angle a;
     Ground ground;
     Howitzer h;
+    Projectile p;
+    double time;
 };

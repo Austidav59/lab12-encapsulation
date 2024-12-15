@@ -189,18 +189,17 @@ private:
    void getZoom_member()
    {
       // Setup
-      Position::setZoom(123.4);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 123.4;
       Position pos;
 
       // Exercise
-      double zoom = Position::getZoom();
+      double zoom = pos.getZoom();
 
       // Verify
-      assertEquals(zoom, 123.4);
-      assertEquals(Position::getZoom(), 123.4);
-
+      assertEquals(pos.getZoom() , 123.4);
       // Teardown
-      Position::setZoom(1.0); // Reset to default value
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -216,18 +215,19 @@ private:
       // Setup
       Position pos1;
       Position pos2;
-      Position::setZoom(99.9);
-      Position::setZoom(123.4);
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 99.0;
+      Position::metersFromPixels = 123.4;
 
       // Exercise
-      double zoom = Position::getZoom();
+      double zoom = pos2.getZoom();
 
       // Verify
       assertEquals(zoom, 123.4);
-      assertEquals(Position::getZoom(), 123.4);
+      assertEquals(pos2.getZoom(), 123.4);
 
       // Teardown
-      Position::setZoom(1.0); // Reset to default value
+      Position::metersFromPixels = metersFromPixels;
    }
 
 
@@ -287,7 +287,8 @@ private:
    void getPixelsX_noZoom()
    {
       // Setup
-      Position::setZoom(1.0);
+       double metersFromPixels = Position::metersFromPixels;
+	   Position::metersFromPixels = 1.0;
       Position pos(123.4, 567.8);
 
       // Exercise
@@ -297,7 +298,7 @@ private:
       assertEquals(pixelsX, 123.4);
 
       // Teardown
-      Position::setZoom(1.0); // Reset to default value
+      Position::metersFromPixels = metersFromPixels; // Reset to default value
    }
 
    /*********************************************
@@ -309,7 +310,8 @@ private:
    void getPixelsX_zoom()
    {
       // Setup
-      Position::setZoom(100.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 100.0;
       Position pos(123.4, 567.8);
 
       // Exercise
@@ -319,7 +321,7 @@ private:
       assertEquals(pixelsX, 1.234);
 
       // Teardown
-      Position::setZoom(1.0); // Reset to default value
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -330,7 +332,8 @@ private:
    void getPixelsY_noZoom()
    {
       // Setup
-      Position::setZoom(1.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 1.0;
       Position pos(123.4, 567.8);
 
       // Exercise
@@ -340,7 +343,7 @@ private:
       assertEquals(pixelsY, 567.8);
 
       // Teardown
-      Position::setZoom(1.0); // Reset to default value
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -351,7 +354,8 @@ private:
    void getPixelsY_zoom()
    {
       // Setup
-      Position::setZoom(100.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 100.0;
       Position pos(123.4, 567.8);
 
       // Exercise
@@ -361,7 +365,7 @@ private:
       assertEquals(pixelsY, 5.678);
 
       // Teardown
-      Position::setZoom(1.0); // Reset to default value
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*****************************************************************
@@ -423,7 +427,8 @@ private:
    void setPixelsX_noZoom()
    {
       // Setup
-      Position::setZoom(1.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 1.0;
       Position pos(999.9, 888.8);
 
       // Exercise
@@ -434,7 +439,7 @@ private:
       assertEquals(pos.getMetersY(), 888.8);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -445,7 +450,8 @@ private:
    void setPixelsX_zoom()
    {
       // Setup
-      Position::setZoom(100.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 100.0;
       Position pos(999.9, 888.8);
 
       // Exercise
@@ -456,7 +462,7 @@ private:
       assertEquals(pos.getMetersY(), 888.8);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -467,7 +473,8 @@ private:
    void setPixelsY_noZoom()
    {
       // Setup
-      Position::setZoom(1.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 1.0;
       Position pos(999.9, 888.8);
 
       // Exercise
@@ -478,7 +485,7 @@ private:
       assertEquals(pos.getMetersY(), 123.4);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -489,7 +496,8 @@ private:
    void setPixelsY_zoom()
    {
       // Setup
-      Position::setZoom(100.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 100.0;
       Position pos(999.9, 888.8);
 
       // Exercise
@@ -500,7 +508,7 @@ private:
       assertEquals(pos.getMetersY(), 12340.0);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -547,7 +555,8 @@ private:
    void addPixelsX_noZoom()
    {
       // Setup
-      Position::setZoom(1.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 1.0;
       Position pos(4500, 2500);
 
       // Exercise
@@ -558,7 +567,7 @@ private:
       assertEquals(pos.getMetersY(), 2500);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -569,7 +578,8 @@ private:
    void addPixelsX_zoom()
    {
       // Setup
-      Position::setZoom(50.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 50.0;
       Position pos(4500, 2500);
 
       // Exercise
@@ -580,7 +590,7 @@ private:
       assertEquals(pos.getMetersY(), 2500);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -591,7 +601,8 @@ private:
    void addPixelsY_noZoom()
    {
       // Setup
-      Position::setZoom(1.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 1.0;
       Position pos(4500, 2500);
 
       // Exercise
@@ -602,7 +613,7 @@ private:
       assertEquals(pos.getMetersY(), 2503);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -613,7 +624,8 @@ private:
    void addPixelsY_zoom()
    {
       // Setup
-      Position::setZoom(50.0);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 50.0;
       Position pos(4500, 2500);
 
       // Exercise
@@ -624,7 +636,7 @@ private:
       assertEquals(pos.getMetersY(), 2650);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -636,17 +648,18 @@ private:
    void setZoom_member()
    {
       // Setup
-      Position::setZoom(99.9);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 99.9;
       Position pos;
 
       // Exercise
-      Position::setZoom(123.4);
+      pos.setZoom(123.4);
 
       // Verify
-      assertEquals(Position::getZoom(), 123.4);
+      assertEquals(pos.getZoom(), 123.4);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************
@@ -661,19 +674,20 @@ private:
    void setZoom_anotherVariable()
    {
       // Setup
-      Position::setZoom(99.9);
+       double metersFromPixels = Position::metersFromPixels;
+       Position::metersFromPixels = 99.9;
       Position pos1;
-      Position::setZoom(88.9);
+      Position::metersFromPixels = 88.8;
       Position pos2;
 
       // Exercise
-      Position::setZoom(123.4);
+      pos2.setZoom(123.4);
 
       // Verify
-      assertEquals(Position::getZoom(), 123.4);
+      assertEquals(pos2.getZoom(), 123.4);
 
       // Teardown
-      Position::setZoom(1.0);
+      Position::metersFromPixels = metersFromPixels;
    }
 
    /*********************************************

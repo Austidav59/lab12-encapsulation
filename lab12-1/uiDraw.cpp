@@ -138,7 +138,7 @@ void ogstream :: drawText(const Position & topLeft, const char * text)
  *************************************************************************/
 void ogstream :: drawProjectile(const Position& pos, double age)
 {
-   const double tailLength = 5.0;
+   const double tailLength = 20.0;
 
    GLfloat color = (GLfloat)(age / tailLength);
    

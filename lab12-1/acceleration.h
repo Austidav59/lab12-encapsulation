@@ -8,6 +8,7 @@
 ************************************************************************/
 
 #pragma once
+#include "angle.h"
 
 class TestAcceleration;
 class TestVelocity;
@@ -30,6 +31,7 @@ public:
    // constructors
    Acceleration() : ddx(0.0), ddy(0.0) { }
    Acceleration(double ddx, double ddy) : ddx(ddx), ddy(ddy) { }
+   Acceleration(Angle a, double magnitude) { set(a, magnitude); }
 
    // getters
    double getDDX() const { return ddx; }
@@ -44,6 +46,13 @@ public:
    void addDDX(double ddx) { this->ddx += ddx; }
    void addDDY(double ddy) { this->ddy += ddy; }
    void add(const Acceleration& rhs);
+
+   Acceleration operator + (const Acceleration& rhs) const
+   {
+	   Acceleration aReturn(*this);
+	   aReturn.add(rhs);
+	   return aReturn;
+   }
 
 private:
    double ddx;     // horizontal acceleration

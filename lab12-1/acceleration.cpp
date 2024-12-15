@@ -27,7 +27,7 @@ void Acceleration::set(const Angle& a, double magnitude)
 *********************************************/
 void Acceleration::add(const Acceleration& rhs)
 {
-   ddx += rhs.ddx;
-   ddy += rhs.ddy;
+   ddx += rhs.getDDX();
+   ddy += rhs.getDDY();
 }
 
