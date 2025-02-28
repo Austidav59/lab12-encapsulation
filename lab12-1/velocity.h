@@ -37,11 +37,11 @@ public:
    void set(const Angle& angle, double magnitude);
    void setDX(double dx) { this->dx = dx; }
    void setDY(double dy) { this->dy = dy; }
-   void addDX(double dx) { this->dx += dx; }
-   void addDY(double dy) { this->dy += dy; }
+   void addDX(double dx) { setDX(getDX() + dx); }
+   void addDY(double dy) { setDY(getDY() + dy); }
    void add(const Acceleration& acceleration, double time);
-   void add(const Velocity& rhs) { dx += rhs.dx; dy += rhs.dy; }
-   void reverse() { dx = -dx; dy = -dy; }
+   void add(const Velocity& rhs) { dx += rhs.getDX(); dy += rhs.getDY(); }
+   void reverse();
 
 private:
    double dx;           // horizontal velocity

@@ -29,11 +29,17 @@ void callBack(const Interface* pUI, void* p)
    // is the first step of every single callback function in OpenGL. 
    Simulator* pSim = (Simulator*)p;
 
-   ogstream gout;
-   Position pos(10, 10);
-   gout = pos;
+   
+   // advance the game
+   if (pSim->p.flying())
+   {
+	   pSim->time += .05;
+	   pSim->p.advance(pSim->time);
+   }
+   
+
    // draw the game
-   pSim->display();
+   pSim->display(pSim->posUpperRight);
 
    // handle input
    if (pUI->isRight())
@@ -48,7 +54,7 @@ void callBack(const Interface* pUI, void* p)
    }
    if (pUI->isSpace())
    {
-       /*pSim->p.fire();*/
+	   pSim->p.fire(pSim->h.getPosition(), pSim->time, pSim->a, pSim->h.getMuzzleVelocity());
    }
    
 }
@@ -75,7 +81,7 @@ int main(int argc, char** argv)
    // Initialize OpenGL
    Position posUpperRight;
    posUpperRight.setZoom(40.0 /* 40 meters equals 1 pixel */);
-   posUpperRight.setPixelsX(700.0);
+   posUpperRight.setPixelsX(1000.0);
    posUpperRight.setPixelsY(500.0);
    Interface ui("M777 Howitzer Simulation", posUpperRight);
 

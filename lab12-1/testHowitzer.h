@@ -192,7 +192,7 @@ private:
 
         Position pos = h.position;
 
-        assertUnit(pos.getPixelsX() >= 1 && pos.x <= 9);
+        assertUnit(pos.getPixelsX() >= 1 && pos.getPixelsX() <= 9);
         assertUnit(pos.getPixelsY() == 0); // Ensure y is always zero
     }
 

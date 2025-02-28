@@ -24,7 +24,7 @@
      PositionVelocityTime pvt = flightPath.back();
      double speed = pvt.v.getSpeed();
      double altitude = pvt.pos.getMetersY();
-     double interval = simulationTime - currentTime();
+     double interval = simulationTime; //- currentTime();
      assert(interval > 0.0);
 
 
@@ -33,23 +33,17 @@
      double mach = speed / speedSound;
      double dragCoefficient = dragFromMach(mach);
      double windResistance = forceFromDrag(density, dragCoefficient, radius, speed);
-     double magnitudeWind = -(windResistance / mass); //negative because it is causing decceleration
-     Angle ang = pvt.v.getAngle();
-     Acceleration aWind(0.0, 0.0);
-     ang.setRadians(-ang.getRadians());
-     aWind.set(ang, magnitudeWind);
+     double magnitudeWind = (windResistance / mass); //negative because it is causing decceleration
+     Acceleration aWind(-pvt.v.getAngle(), magnitudeWind);
 
      double magnitudeGravity = gravityFromAltitude(altitude);
      Angle angleGravity;
      angleGravity.setDown();
-     Acceleration aGravity(0.0, 0.0);
-     aGravity.set(angleGravity, magnitudeGravity);
+     Acceleration aGravity(angleGravity, magnitudeGravity);
 
-     Acceleration aTotal(0.0, 0.0);
-     double x = aGravity.getDDX() + aWind.getDDX();
-     double y = aGravity.getDDY() + aWind.getDDY();
-     aTotal.set(x,y);
+	 Acceleration aTotal = aGravity + aWind;
 
+	 
      pvt.pos.add(aTotal, pvt.v, interval);
      pvt.v.add(aTotal, interval);
      pvt.t = simulationTime;

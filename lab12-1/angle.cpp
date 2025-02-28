@@ -11,61 +11,12 @@
 #include <cmath>
 #include <cassert>
 
-void Angle::setDegrees(double degrees)
-{
-   radians = normalize(degrees * M_PI / 180.0);
-}
-
-void Angle::setRadians(double radians)
-{
-   this->radians = normalize(radians);
-}
 void Angle::setNaturalRadians(double radians)
 {
     this->radians = radians; // Set without normalization
 }
 
-Angle &Angle::add(double delta)
-{
-   radians = normalize(radians + delta);
-   return *this;
-}
 
-void Angle::setDxDy(double dx, double dy)
-{
-   if (dx == 0.0 && dy == 0.0)
-   {
-      radians = 0.0; // Default case: no movement
-   }
-   else if (dx == 0.0)
-   {
-      radians = (dy > 0) ? M_PI_2 : -M_PI_2; // Straight up or straight down
-   }
-   else if (dy == 0.0)
-   {
-      // Handle small negative dx values more accurately
-      if (dx > 0)
-      {
-         radians = M_PI_2; // Right
-      }
-      else
-      {
-         radians = M_PI; // Left
-      }
-   }
-   else
-   {
-      radians = normalize(atan2(dy, dx)); // General case for other directions
-   }
-}
-
-
-Angle &Angle::operator+(double degrees) 
-{
-    double deltaInRadians = normalize(degrees * M_PI / 180.0);
-    this->add(deltaInRadians);
-    return *this;
-}
 
 double Angle::normalize(double radians) const
 {

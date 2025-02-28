@@ -37,21 +37,26 @@ public:
    // getters
    double getMetersX() const { return x; }
    double getMetersY() const { return y; }
-   double getPixelsX() const;
-   double getPixelsY() const;
+   double getPixelsX() const { return x / metersFromPixels; }
+   double getPixelsY() const { return y / metersFromPixels; }
 
    // setters
-   static void setZoom(double z);
-   static double getZoom();
+   void setZoom(double metersFromPixels)
+   {
+	   this->metersFromPixels = metersFromPixels;
+   }	
+   double getZoom() const { return metersFromPixels; }
+
    void setMeters(double xMeters, double yMeters) { x = xMeters; y = yMeters; }
    void setMetersX(double xMeters) { x = xMeters; }
    void setMetersY(double yMeters) { y = yMeters; }
-   void setPixelsX(double xPixels);
-   void setPixelsY(double yPixels);
-   double addMetersX(double dx) { x += dx; return x; }
-   double addMetersY(double dy) { y += dy; return y; }
-   double addPixelsX(double dx);
-   double addPixelsY(double dy);
+   void setPixelsX(double xPixels) { x = xPixels * metersFromPixels; }
+   void setPixelsY(double yPixels) { y = yPixels * metersFromPixels; }
+   void addMetersX(double dx) { setMetersX(getMetersX() + dx); }
+   void addMetersY(double dy) { setMetersY(getMetersY() + dy); }
+   void addPixelsX(double dx) { setPixelsX(getPixelsX() + dx); }
+   void addPixelsY(double dy) { setPixelsY(getPixelsY() + dy); }
+
    void add(const Acceleration& a, const Velocity& v, double t);
    void reverse() { x = -x; y = -y; }
 
